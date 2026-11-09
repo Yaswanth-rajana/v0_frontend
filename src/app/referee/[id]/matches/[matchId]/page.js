@@ -1,12 +1,8 @@
-'use client';
-
 import { MatchScreen } from "@/screen/referee/match";
-import { useParams } from "next/navigation";
 
-const RefereeMatchPage = () => {
-  const params = useParams();
-  return <MatchScreen tournamentId={params.id} matchId={params.matchId} />;
+const RefereeMatchPage = async ({ params }) => {
+  const { id, matchId } = await params;
+  return <MatchScreen tournamentId={id} matchId={matchId} />;
 };
 
-
-export default RefereeMatchPage; 
+export default RefereeMatchPage;

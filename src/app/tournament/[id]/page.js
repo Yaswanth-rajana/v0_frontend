@@ -1,14 +1,13 @@
-'use client'
-import { TournamentScreen } from "@/screen/tournament"
-import { use } from 'react'
+import { TournamentScreen } from "@/screen/tournament";
 
-const TournamentPage = ({ params }) => {
-  const resolvedParams = use(params)
+const TournamentPage = async ({ params }) => {
+  const { id } = await params;
+  
   return (
     <div>
-      <TournamentScreen id={resolvedParams.id} />
+      <TournamentScreen id={id} />
     </div>
-  )
-}
+  );
+};
 
-export default TournamentPage 
+export default TournamentPage;

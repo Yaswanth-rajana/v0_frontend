@@ -51,11 +51,14 @@ const RefereeFixtures = ({ tournamentId, totalRounds }) => {
         return matches.map((match) => (
             <div
                 key={match.match_id}
-                className={`${styles.matchCard} ${match.status === 'completed' ? styles.completed : ''} ${styles.refereeMode}`}
+                className={`${styles.matchCard} ${match.status === 'completed' ? styles.completed : ''} ${match.is_walkover ? styles.walkover : ''} ${styles.refereeMode}`}
                 onClick={() => handleMatchClick(match)}
             >
                 <div className={styles.matchId}>
                     Match ID: {match.match_id}
+                    {match.is_walkover && (
+                        <span className={styles.walkoverBadge}>WALKOVER</span>
+                    )}
                 </div>
 
                 <div className={styles.teams}>
@@ -66,7 +69,11 @@ const RefereeFixtures = ({ tournamentId, totalRounds }) => {
                         {match.team1_id && (
                             <div className={styles.teamId}>Team ID: {match.team1_id}</div>
                         )}
-                        <div className={styles.score}>{match.team1Score}</div>
+                        <div className={styles.score}>
+                            {match.is_walkover 
+                                ? (match.winner_team_id === match.team1_id ? 'W/O' : '-') 
+                                : ((match.status === 'completed' || match.match_status?.is_final) ? match.team1Score : '-')}
+                        </div>
                     </div>
                     <div className={styles.vs}>vs</div>
                     <div className={`${styles.team} ${
@@ -76,7 +83,11 @@ const RefereeFixtures = ({ tournamentId, totalRounds }) => {
                         {match.team2_id && (
                             <div className={styles.teamId}>Team ID: {match.team2_id}</div>
                         )}
-                        <div className={styles.score}>{match.team2Score}</div>
+                        <div className={styles.score}>
+                            {match.is_walkover 
+                                ? (match.winner_team_id === match.team2_id ? 'W/O' : '-') 
+                                : ((match.status === 'completed' || match.match_status?.is_final) ? match.team2Score : '-')}
+                        </div>
                     </div>
                 </div>
 

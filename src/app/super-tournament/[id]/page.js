@@ -1,10 +1,8 @@
-'use client'
-import { use } from 'react';
 import { SuperTournamentScreen } from "@/screen/superTournament";
 
-const SuperTournamentPage = ({ params }) => {
-  const resolvedParams = use(params);
-  return <SuperTournamentScreen id={resolvedParams.id} />;
+const SuperTournamentPage = async ({ params }) => {
+  const { id } = await params;
+  return <SuperTournamentScreen id={id} />;
 };
 
-export default SuperTournamentPage; 
+export default SuperTournamentPage;

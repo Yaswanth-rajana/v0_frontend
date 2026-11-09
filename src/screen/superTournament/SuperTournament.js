@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { apiCall } from '@/store/utils';
 import { endpoints } from '@/store/urls';

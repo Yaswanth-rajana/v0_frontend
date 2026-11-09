@@ -165,7 +165,7 @@ const OrganizerTournamentScreen = () => {
     const renderContent = () => {
         switch (activeTab) {
             case "fixtures":
-                return <TournamentFixtures tournamentId={storedCategoryId} totalRounds={totalRounds} />
+                return <TournamentFixtures tournamentId={storedCategoryId} totalRounds={totalRounds} tournamentType={tournamentDetails?.type} />
             case "standings":
                 return <Standings tournamentId={storedCategoryId} totalRounds={totalRounds} />
             case "details":

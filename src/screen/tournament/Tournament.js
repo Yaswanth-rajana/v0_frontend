@@ -37,7 +37,7 @@ const TournamentScreen = ({ id }) => {
 
     switch (activeTab) {
       case "fixtures":
-        return <TournamentFixtures tournamentId={id} totalRounds={totalRounds} />;
+        return <TournamentFixtures tournamentId={id} totalRounds={totalRounds} tournamentType={tournamentDetails?.type} />;
       case "standings":
         return <Standings tournamentId={id} totalRounds={totalRounds} />;
       case "table":
@@ -101,7 +101,7 @@ const TournamentScreen = ({ id }) => {
 
       await getMatchStats(tournament_id);
     } catch (error) {
-      console.error("Failed to fetch details:", error.message);
+      console.warn("Failed to fetch details:", error.message || error);
       toast.error("Failed to load tournament details");
       router.push('/');
     } finally {
@@ -128,7 +128,7 @@ const TournamentScreen = ({ id }) => {
         });
       }
     } catch (error) {
-      console.error("Failed to fetch match stats:", error);
+      console.warn("Failed to fetch match stats:", error.message || error);
       toast.error("Failed to load match statistics");
     }
   };

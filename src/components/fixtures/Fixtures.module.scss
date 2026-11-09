@@ -172,6 +172,24 @@
     }
   }
 
+  &.walkover {
+    border-color: #ff9800;
+    background-color: #fff8e1;
+  }
+
+  .walkoverBadge {
+    background-color: #e65100;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+    margin-left: 0.5rem;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
   &.refereeMode {
     cursor: pointer;
 

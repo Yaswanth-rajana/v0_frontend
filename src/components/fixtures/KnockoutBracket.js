@@ -70,6 +70,10 @@ const KnockoutBracket = ({ matches }) => {
         const transformedMatches = sortedMatches.map(match => {
             const roundNum = match.bracket_info?.round_number || 0;
             const position = match.bracket_info?.bracket_position || 0;
+            const isWalkover = Boolean(match.is_walkover || match.match_status?.is_walkover || match.match_result === 'WALKOVER');
+            const isCompleted = match.status === 'completed' || match.match_status?.status === 'completed' || Boolean(match.match_status?.is_final);
+            const team1Won = match.match_status?.winner_team_id === match.team1?.team_id;
+            const team2Won = match.match_status?.winner_team_id === match.team2?.team_id;
             
             return {
                 id: `${roundNum}-${position}`,
@@ -84,15 +88,19 @@ const KnockoutBracket = ({ matches }) => {
                 participants: [
                     {
                         id: match.team1?.team_id || 'TBD',
-                        resultText: match.match_result.split('-')[0] || null,
-                        isWinner: match.match_status?.winner_team_id === match.team1?.team_id,
+                        resultText: isWalkover 
+                            ? (team1Won ? 'W/O' : '-')
+                            : (isCompleted && match.match_result && match.match_result.includes('-') ? match.match_result.split('-')[0] : '-'),
+                        isWinner: team1Won,
                         status: match.team1?.checked_in ? 'PLAYED' : null,
                         name: formatPlayerNames(match.team1_players)
                     },
                     {
                         id: match.team2?.team_id || 'TBD',
-                        resultText: match.match_result.split('-')[1] || null,
-                        isWinner: match.match_status?.winner_team_id === match.team2?.team_id,
+                        resultText: isWalkover 
+                            ? (team2Won ? 'W/O' : '-')
+                            : (isCompleted && match.match_result && match.match_result.includes('-') ? match.match_result.split('-')[1] : '-'),
+                        isWinner: team2Won,
                         status: match.team2?.checked_in ? 'PLAYED' : null,
                         name: formatPlayerNames(match.team2_players)
                     }

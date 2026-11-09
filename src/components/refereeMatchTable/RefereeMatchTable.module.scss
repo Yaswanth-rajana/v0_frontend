@@ -152,6 +152,33 @@
   }
 }
 
+.walkoverButton {
+  composes: button;
+  background-color: #e65100;
+  color: white;
+
+  &:hover {
+    background-color: #bf360c;
+  }
+}
+
+.walkoverTag {
+  background-color: #fff3e0;
+  color: #e65100;
+  border: 1px solid #ffb74d;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  display: inline-block;
+}
+
+.winnerHighlight {
+  color: #2e7d32;
+  font-weight: 700;
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 0.5rem;

@@ -98,7 +98,11 @@ const KnockoutBracket2 = ({ matches }) => {
                 });
             }
 
-            const scores = match.match_result ? match.match_result.split('-').map(Number) : [0, 0];
+            const isWalkover = Boolean(match.is_walkover || match.match_status?.is_walkover || match.match_result === 'WALKOVER');
+            const isCompleted = match.status === 'completed' || match.match_status?.status === 'completed' || Boolean(match.match_status?.is_final);
+            const team1Won = match.match_status?.winner_team_id === match.team1?.team_id;
+            const team2Won = match.match_status?.winner_team_id === match.team2?.team_id;
+            const scores = match.match_result && match.match_result.includes('-') ? match.match_result.split('-').map(Number) : [0, 0];
             
             roundsMap.get(roundNum).seeds.push({
                 id: match.match_id,
@@ -106,13 +110,13 @@ const KnockoutBracket2 = ({ matches }) => {
                 teams: [
                     {
                         name: formatPlayerNames(match.team1_players),
-                        score: scores[0],
-                        isWinner: match.match_status?.winner_team_id === match.team1?.team_id
+                        score: isWalkover ? (team1Won ? 'W/O' : '-') : (isCompleted ? scores[0] : '-'),
+                        isWinner: team1Won
                     },
                     {
                         name: formatPlayerNames(match.team2_players),
-                        score: scores[1],
-                        isWinner: match.match_status?.winner_team_id === match.team2?.team_id
+                        score: isWalkover ? (team2Won ? 'W/O' : '-') : (isCompleted ? scores[1] : '-'),
+                        isWinner: team2Won
                     }
                 ]
             });

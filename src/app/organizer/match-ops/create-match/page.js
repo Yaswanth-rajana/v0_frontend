@@ -1,3 +1,4 @@
+'use client';
 import { CreateMatchScreen } from '@/screen/organizer/matchops/createMatch'
 
 const CreateMatchPage = () => {

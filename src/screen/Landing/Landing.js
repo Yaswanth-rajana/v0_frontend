@@ -42,8 +42,8 @@ const LandingScreen = () => {
                     toast.error("Invalid Tournament ID. Please try again.");
                 }
             } catch (error) {
-                toast.error("Error fetching tournament details");
-                console.error(error);
+                toast.error(error.message || "Error fetching tournament details");
+                console.warn(error);
             }
         }
     });
@@ -53,11 +53,28 @@ const LandingScreen = () => {
             setLoading(true);
             const response = await apiCall(`${endpoints.getSuperTournamentDetails}/${id}`);
             setTournament(response || null);
-            formik.setFieldValue('seasonId', '');
-            formik.setFieldValue('categoryId', '');
+            
+            // Auto-select season and category if id matches a specific tournament category
+            let matchedSeason = '';
+            let matchedCategory = '';
+            if (response?.seasons) {
+                for (const season of response.seasons) {
+                    const found = season.tournaments?.find(t => t.id.toString() === id.toString());
+                    if (found) {
+                        matchedSeason = season.id.toString();
+                        matchedCategory = found.id.toString();
+                        break;
+                    }
+                }
+                if (!matchedSeason && response.seasons.length === 1) {
+                    matchedSeason = response.seasons[0].id.toString();
+                }
+            }
+            formik.setFieldValue('seasonId', matchedSeason);
+            formik.setFieldValue('categoryId', matchedCategory);
         } catch (error) {
-            console.error('Error fetching tournament details:', error);
-            toast.error('Failed to fetch tournament details');
+            console.warn('Error fetching tournament details:', error.message);
+            toast.error(error.message || 'Failed to fetch tournament details');
             setTournament(null);
             formik.setFieldValue('seasonId', '');
             formik.setFieldValue('categoryId', '');

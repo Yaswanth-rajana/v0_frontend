@@ -20,7 +20,7 @@ const MatchTable = ({ tournamentId }) => {
           setMatches(response.matches);
         }
       } catch (error) {
-        console.error('Failed to fetch matches:', error);
+        console.warn('Failed to fetch matches:', error.message || error);
         toast.error('Failed to load matches');
       } finally {
         setLoading(false);
@@ -52,7 +52,9 @@ const MatchTable = ({ tournamentId }) => {
         match.pool || '-',
         match.team1_players,
         match.team2_players,
-        match.match_result,
+        match.match_status?.is_walkover || match.is_walkover || match.match_result === 'WALKOVER' 
+          ? 'WALKOVER' 
+          : (match.match_status?.status === 'completed' || match.match_status?.is_final ? match.match_result : '-'),
         match.match_status.status
       ]);
 
@@ -73,7 +75,7 @@ const MatchTable = ({ tournamentId }) => {
       document.body.removeChild(link);
       toast.success('CSV file downloaded successfully');
     } catch (error) {
-      console.error('Failed to export CSV:', error);
+      console.warn('Failed to export CSV:', error.message || error);
       toast.error('Failed to export matches to CSV');
     }
   };
@@ -108,9 +110,19 @@ const MatchTable = ({ tournamentId }) => {
                 <td>{match.match_id}</td>
                 <td>{match.round_name || `Round ${match.round_id}`}</td>
                 <td>{match.pool || '-'}</td>
-                <td>{match.team1_players}</td>
-                <td>{match.team2_players}</td>
-                <td>{match.match_result}</td>
+                <td className={match.match_status?.winner_team_id === match.team1?.team_id ? stl.winner : ''}>
+                  {match.team1_players} {match.match_status?.winner_team_id === match.team1?.team_id ? '👑' : ''}
+                </td>
+                <td className={match.match_status?.winner_team_id === match.team2?.team_id ? stl.winner : ''}>
+                  {match.team2_players} {match.match_status?.winner_team_id === match.team2?.team_id ? '👑' : ''}
+                </td>
+                <td>
+                  {match.match_status?.is_walkover || match.is_walkover || match.match_result === 'WALKOVER' ? (
+                    <span className={stl.walkoverBadge}>WALKOVER</span>
+                  ) : (
+                    match.match_status?.status === 'completed' || match.match_status?.is_final ? match.match_result : '-'
+                  )}
+                </td>
                 <td>
                   <span className={`${stl.status} ${stl[match.match_status.status]}`}>
                     {match.match_status.status}

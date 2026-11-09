@@ -34,6 +34,7 @@ export const endpoints = {
     getSecondPlaceStandings: baseurl + "/second-place-standings",
     getMatchScore: baseurl + "/score/match",
     updateMatchScore: baseurl + "/update-score",
+    declareWalkover: baseurl + "/declare-walkover",
     addTournament: baseurl + "/tournaments",
     createRound: baseurl + "/create-round",
     createMatch: baseurl + "/create-match",

@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Khel Club – Frontend (v0_frontend)
+
+Next.js (App Router) user and referee portal for the Khel Club tournament management system.
+
+## Overview
+
+This repository provides tournament visualization, match fixtures, interactive knockout brackets, and referee scoring interfaces, including full support for Walkover match outcomes.
+
+## Key Features
+
+- **Tournament Fixture Views**:
+  - Pool-wise and Round-Robin views.
+  - Interactive Knockout Brackets (Single Elimination with SVG pan-zoom and alternate bracket representations).
+  - Dynamic default fixture view selection: elimination tournaments open the bracket view by default.
+- **Walkover Management & Visualization**:
+  - Referee Walkover declaration workflow with team selection and confirmation dialogs.
+  - Distinct amber `WALKOVER` badge on fixture cards, referee tables, and brackets.
+  - Winner highlighting with crown `👑` and conceded team status.
+  - Suppresses numerical scores for Walkovers (`W/O` vs `-`).
+  - Pending / unplayed matches display neutral `—` instead of deceptive placeholder zeroes (`0–0`).
+  - Immutability enforcement: finalized matches cannot be edited or overridden from the referee interface.
+- **Production Resilience**:
+  - Server Component dynamic route wrappers for Next.js 15 App Router (`[id]`).
+  - Global error handling suppressing raw browser/extension unhandled event rejections.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18.18+ or 20+
+- Running backend service (`v0_backend` on `http://localhost:5001`)
+
+### Environment Configuration
+
+Create a local environment file from `.env.example`:
+
+```bash
+cp .env.example .env.local
+```
+
+### Installation
+
+```bash
+npm install
+```
+
+### Development Server
+
+Run the development server on `http://localhost:3000`:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Production Build
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Create an optimized production build:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+```
 
-## Learn More
+Start the production server:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm start
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Tech Stack
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Framework**: Next.js 15 (App Router)
+- **Library**: React 18
+- **Styling**: SCSS Modules, Material UI (@mui/material, @mui/icons-material)
+- **Brackets**: `@g-loot/react-tournament-brackets`, `react-brackets`
+- **Realtime**: `socket.io-client`
+- **Notifications**: `react-hot-toast`
+- **Form Management**: Formik & Yup
